@@ -68,6 +68,7 @@ public class ResourcesController {
         LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryPage(user);
         HashMap<String, Object> data = new HashMap<>();
         data.put("roles", roleService.list());
+        data.put("users", userService.list());
         PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps,data);
         return R.OK(result);
     }
