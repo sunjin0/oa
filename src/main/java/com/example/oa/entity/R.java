@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class R{
+public class R {
     private String code;
     private String message;
     private Object data;

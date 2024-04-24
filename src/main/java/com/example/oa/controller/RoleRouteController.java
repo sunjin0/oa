@@ -57,15 +57,15 @@ public class RoleRouteController {
     @ApiOperation(value = "添加角色路由信息")
     @PostMapping("/add")
     public String save(@RequestBody RoleRoute roleRoute) {
-       try {
-           if (roleRoute == null) {
-               return R.Worm(Constant.Parameter_Error);
-           }
-           roleRouteService.save(roleRoute);
-           return R.OK(Constant.Save_Successfully);
-       }catch (Exception e){
-           throw new ServerException(e.getMessage());
-       }
+        try {
+            if (roleRoute == null) {
+                return R.Worm(Constant.Parameter_Error);
+            }
+            roleRouteService.save(roleRoute);
+            return R.OK(Constant.Save_Successfully);
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
+        }
     }
 
     @ApiImplicitParam(value = "Id")
@@ -89,7 +89,7 @@ public class RoleRouteController {
             }
             roleRouteService.updateById(roleRoute);
             return R.OK(Constant.Delete_Successfully);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new ServerException(e.getMessage());
         }
     }

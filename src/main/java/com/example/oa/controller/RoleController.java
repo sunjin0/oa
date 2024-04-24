@@ -56,9 +56,10 @@ public class RoleController {
         }
         Page<Role> pages = roleService.page(page, queryWrapper);
         List<Role> roles = pages.getRecords();
-        PageResult<Role> result = new PageResult<>(role.getCurrent(), role.getSize(), pages.getTotal(), roles,routeService.list());
+        PageResult<Role> result = new PageResult<>(role.getCurrent(), role.getSize(), pages.getTotal(), roles, routeService.list());
         return R.OK(result);
     }
+
     @ApiImplicitParam(dataType = "Role")
     @ApiOperation(value = "添加角色信息")
     @PostMapping("/add")

@@ -1,6 +1,6 @@
 package com.example.oa.exceptionHandler;
 
-public class ServerException extends RuntimeException{
+public class ServerException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     public ServerException(String message) {

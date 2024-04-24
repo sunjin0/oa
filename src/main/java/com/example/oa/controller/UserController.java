@@ -36,6 +36,24 @@ public class UserController {
     @Autowired
     private UserServiceImpl userService;
 
+    private static QueryWrapper<User> getUserQueryWrapper(User user) {
+        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+        if (user.getId() != null) {
+            userQueryWrapper.eq("id", user.getId());
+        }
+        if (user.getUserName() != null) {
+            userQueryWrapper.like("user_name", user.getUserName());
+        }
+        if (user.getEnable() != null) {
+            userQueryWrapper.eq("enable", user.getEnable());
+        }
+        if (user.getLocked() != null) {
+            userQueryWrapper.eq("locked", user.getLocked());
+
+        }
+        return userQueryWrapper;
+    }
+
     @ApiImplicitParam(value = "用户Id")
     @ApiOperation(value = "获取用户信息")
     @GetMapping("/user/{userId}")
@@ -59,24 +77,6 @@ public class UserController {
         PageResult<User> result = new PageResult<>(user.getCurrent(), user.getSize(), pages.getTotal(), users);
 
         return R.OK(result);
-    }
-
-    private static QueryWrapper<User> getUserQueryWrapper(User user) {
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        if (user.getId() != null) {
-            userQueryWrapper.eq("id", user.getId());
-        }
-        if (user.getUserName() != null) {
-            userQueryWrapper.like("user_name", user.getUserName());
-        }
-        if (user.getEnable() != null) {
-            userQueryWrapper.eq("enable", user.getEnable());
-        }
-        if (user.getLocked() != null) {
-            userQueryWrapper.eq("locked", user.getLocked());
-
-        }
-        return userQueryWrapper;
     }
 
     @ApiImplicitParam(dataType = "User")

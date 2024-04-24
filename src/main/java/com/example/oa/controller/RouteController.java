@@ -60,15 +60,15 @@ public class RouteController {
     @PostMapping("/add")
     public String save(@RequestBody Route route) {
 
-     try {
-         if (route == null) {
-             return R.Worm(Constant.Parameter_Error);
-         }
-         routeService.save(route);
-         return R.OK(Constant.Save_Successfully);
-     }catch (Exception e){
-         throw new ServerException(e.getMessage());
-     }
+        try {
+            if (route == null) {
+                return R.Worm(Constant.Parameter_Error);
+            }
+            routeService.save(route);
+            return R.OK(Constant.Save_Successfully);
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
+        }
     }
 
     @ApiImplicitParam(value = "用户Id")
@@ -86,14 +86,14 @@ public class RouteController {
     @ApiOperation(value = "修改前端路由信息")
     @PostMapping("/update")
     public String update(@RequestBody Route route) {
-      try {
-          if (route == null) {
-              return R.OK(Constant.Parameter_Error);
-          }
-          routeService.updateById(route);
-          return R.OK(Constant.Delete_Successfully);
-      }catch (Exception e){
-          throw new ServerException(e.getMessage());
-      }
+        try {
+            if (route == null) {
+                return R.OK(Constant.Parameter_Error);
+            }
+            routeService.updateById(route);
+            return R.OK(Constant.Delete_Successfully);
+        } catch (Exception e) {
+            throw new ServerException(e.getMessage());
+        }
     }
 }

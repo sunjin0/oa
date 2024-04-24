@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.oa.common.Constant;
 import com.example.oa.entity.*;
 import com.example.oa.exceptionHandler.ServerException;
-import com.example.oa.service.impl.*;
+import com.example.oa.service.impl.ResourcesServiceImpl;
+import com.example.oa.service.impl.RoleServiceImpl;
+import com.example.oa.service.impl.UserRoleServiceImpl;
+import com.example.oa.service.impl.UserServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +42,7 @@ public class ResourcesController {
     private UserServiceImpl userService;
     @Autowired
     private RoleServiceImpl roleService;
+
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "分页查询资源信息")
     @PostMapping("/query")
@@ -54,7 +58,7 @@ public class ResourcesController {
         Page<Resources> pages = resourcesService.page(page, queryWrapper);
         List<Resources> list = pages.getRecords();
         PageResult<Resources> result = new PageResult<>(resources.getCurrent(), resources.getSize(), pages.getTotal(), list);
-        return R.OK(result);
+       return R.OK(result);
     }
 
     @ApiImplicitParam(dataType = "User")
@@ -62,7 +66,7 @@ public class ResourcesController {
     @PostMapping("/query/list")
     public String queryPages(@RequestBody User user) {
         LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryPage(user);
-        PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps,roleService.list());
+        PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps, roleService.list());
         return R.OK(result);
     }
 
@@ -106,6 +110,7 @@ public class ResourcesController {
             throw new ServerException(e.getMessage());
         }
     }
+
     @ApiImplicitParam(dataType = "UserRole")
     @ApiOperation(value = "权限添加")
     @PostMapping("/user-role/add")

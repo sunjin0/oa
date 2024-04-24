@@ -42,7 +42,6 @@ public class UserRole extends PageParams implements Serializable {
     private Integer roleId;
 
 
-
     @TableField(exist = false)
     private List<Integer> roleIds;
 
