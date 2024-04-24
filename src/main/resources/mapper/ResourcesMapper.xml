@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.oa.mapper.ResourcesMapper">
+
+    <!-- 通用查询结果列 -->
+
+    <select id="getPurviewById" resultType="com.example.oa.entity.Resources" parameterType="java.lang.Integer">
+        select *
+        from resources
+        where route_id in (select route_id
+                           from role_route
+                           where role_id in (select role_id from user_role where user_id = #{userId}))
+    </select>
+    <select id="queryPage" resultType="java.util.Map">
+        select u.id, u.user_name, r.name, r.description, r1.description, r1.path, r2.urls
+        from user u
+                 join user_role ur on u.id = ur.user_id
+                 join role r on r.id = ur.role_id
+                 join role_route rr on r.id = rr.role_id
+                 join route r1 on r1.id = rr.route_id
+                 join resources r2 on rr.route_id = r2.route_id
+    </select>
+
+
+</mapper>
