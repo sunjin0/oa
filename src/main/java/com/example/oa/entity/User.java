@@ -40,9 +40,9 @@ public class User extends PageParams implements Serializable {
     @ApiModelProperty(value = "密码", required = true)
     private String password;
     @ApiModelProperty(value = "是否启用")
-    private int enable = 1;
+    private Integer enable = 1;
     @ApiModelProperty(value = "是否锁定")
-    private int locked = 0;
+    private Integer locked = 0;
     @TableField(exist = false)
     private String info;
 

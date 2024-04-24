@@ -52,6 +52,16 @@ public class UserController {
     public String queryPage(@RequestBody User user) {
 
         Page<User> page = new Page<>(user.getCurrent(), user.getSize());
+        QueryWrapper<User> userQueryWrapper = getUserQueryWrapper(user);
+        Page<User> pages = userService.page(page, userQueryWrapper);
+        List<User> users = pages.getRecords();
+        users.forEach(u -> u.setPassword("*****"));
+        PageResult<User> result = new PageResult<>(user.getCurrent(), user.getSize(), pages.getTotal(), users);
+
+        return R.OK(result);
+    }
+
+    private static QueryWrapper<User> getUserQueryWrapper(User user) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
         if (user.getId() != null) {
             userQueryWrapper.eq("id", user.getId());
@@ -59,12 +69,14 @@ public class UserController {
         if (user.getUserName() != null) {
             userQueryWrapper.like("user_name", user.getUserName());
         }
-        Page<User> pages = userService.page(page, userQueryWrapper);
-        List<User> users = pages.getRecords();
-        users.forEach(u -> u.setPassword("*****"));
-        PageResult<User> result = new PageResult<>(user.getCurrent(), user.getSize(), pages.getTotal(), users);
+        if (user.getEnable() != null) {
+            userQueryWrapper.eq("enable", user.getEnable());
+        }
+        if (user.getLocked() != null) {
+            userQueryWrapper.eq("locked", user.getLocked());
 
-        return R.OK(result);
+        }
+        return userQueryWrapper;
     }
 
     @ApiImplicitParam(dataType = "User")
