@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -56,7 +57,9 @@ public class RoleController {
         }
         Page<Role> pages = roleService.page(page, queryWrapper);
         List<Role> roles = pages.getRecords();
-        PageResult<Role> result = new PageResult<>(role.getCurrent(), role.getSize(), pages.getTotal(), roles, routeService.list());
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("routes",routeService.list());
+        PageResult<Role> result = new PageResult<>(role.getCurrent(), role.getSize(), pages.getTotal(), roles, data);
         return R.OK(result);
     }
 
