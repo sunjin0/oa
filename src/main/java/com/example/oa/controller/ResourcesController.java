@@ -66,7 +66,9 @@ public class ResourcesController {
     @PostMapping("/query/list")
     public String queryPages(@RequestBody User user) {
         LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryPage(user);
-        PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps, roleService.list());
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("roles", roleService.list());
+        PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps,data);
         return R.OK(result);
     }
 

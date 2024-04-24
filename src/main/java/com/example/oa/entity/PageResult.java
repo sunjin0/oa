@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -26,7 +27,7 @@ public class PageResult<T> {
     @ApiModelProperty(value = "列表")
     private List<T> list;
     @ApiModelProperty(value = "附带数据")
-    private Object other;
+    private HashMap<String,Object> other;
 
     public PageResult(long current, long size, long total, List<T> list) {
         this.current = current;
