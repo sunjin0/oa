@@ -37,7 +37,7 @@ public class RoleRouteController {
     @ApiImplicitParam(dataType = "RoleRoute")
     @ApiOperation(value = "分页获取角色路由信息")
     @PostMapping("/query")
-    public String queryPage(@RequestBody RoleRoute roleRoute) {
+    public R queryPage(@RequestBody RoleRoute roleRoute) {
         Page<RoleRoute> page = new Page<>(roleRoute.getCurrent(), roleRoute.getSize());
         QueryWrapper<RoleRoute> queryWrapper = new QueryWrapper<>();
         if (roleRoute.getId() != null) {
@@ -56,7 +56,7 @@ public class RoleRouteController {
     @ApiImplicitParam(dataType = "RoleRoute")
     @ApiOperation(value = "添加角色路由信息")
     @PostMapping("/add")
-    public String save(@RequestBody RoleRoute roleRoute) {
+    public R save(@RequestBody RoleRoute roleRoute) {
         try {
             if (roleRoute == null) {
                 return R.Worm(Constant.Parameter_Error);
@@ -71,7 +71,7 @@ public class RoleRouteController {
     @ApiImplicitParam(value = "Id")
     @ApiOperation(value = "删除角色路由信息")
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public R delete(@PathVariable Integer id) {
         if (id == null) {
             return R.OK(Constant.Parameter_Error);
         }
@@ -82,7 +82,7 @@ public class RoleRouteController {
     @ApiImplicitParam(dataType = "Route")
     @ApiOperation(value = "修改角色路由信息")
     @PostMapping("/update")
-    public String update(@RequestBody RoleRoute roleRoute) {
+    public R update(@RequestBody RoleRoute roleRoute) {
         try {
             if (roleRoute == null) {
                 return R.OK(Constant.Parameter_Error);

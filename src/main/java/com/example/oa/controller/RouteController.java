@@ -38,7 +38,7 @@ public class RouteController {
     @ApiImplicitParam(dataType = "Route")
     @ApiOperation(value = "分页获取前端路由信息")
     @PostMapping("/query")
-    public String queryPage(@RequestBody Route route) {
+    public R queryPage(@RequestBody Route route) {
 
         Page<Route> page = new Page<>(route.getCurrent(), route.getSize());
         QueryWrapper<Route> queryWrapper = new QueryWrapper<>();
@@ -58,7 +58,7 @@ public class RouteController {
     @ApiImplicitParam(dataType = "Route")
     @ApiOperation(value = "添加前端路由信息")
     @PostMapping("/add")
-    public String save(@RequestBody Route route) {
+    public R save(@RequestBody Route route) {
 
         try {
             if (route == null) {
@@ -74,7 +74,7 @@ public class RouteController {
     @ApiImplicitParam(value = "用户Id")
     @ApiOperation(value = "删除前端路由信息")
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable Integer id) {
+    public R delete(@PathVariable Integer id) {
         if (id == null) {
             return R.OK(Constant.Parameter_Error);
         }
@@ -85,7 +85,7 @@ public class RouteController {
     @ApiImplicitParam(dataType = "Route")
     @ApiOperation(value = "修改前端路由信息")
     @PostMapping("/update")
-    public String update(@RequestBody Route route) {
+    public R update(@RequestBody Route route) {
         try {
             if (route == null) {
                 return R.OK(Constant.Parameter_Error);

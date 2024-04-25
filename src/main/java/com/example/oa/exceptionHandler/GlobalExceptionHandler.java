@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
 
     @ExceptionHandler(ServerException.class)
-    public ResponseEntity<String> handle(ServerException e) {
+    public ResponseEntity<R> handle(ServerException e) {
         return new ResponseEntity<>(R.Error(e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

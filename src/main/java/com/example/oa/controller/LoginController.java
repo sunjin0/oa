@@ -34,7 +34,7 @@ public class LoginController {
     @ApiImplicitParam(dataType = "User")
     @ApiOperation("登陆接口")
     @PostMapping("/login")
-    public String login(@RequestBody @Valid User u) {
+    public R login(@RequestBody @Valid User u) {
         try {
             QueryWrapper<User> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("user_name", u.getUserName());

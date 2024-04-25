@@ -25,7 +25,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
     private RoleRouteServiceImpl roleRouteService;
 
     @Transactional(rollbackFor = Exception.class)
-    public String saveRoleRouteResources(Role role) {
+    public R saveRoleRouteResources(Role role) {
         boolean isSave = save(role);
         for (Integer i : role.getRouteIds()) {
             roleRouteService.save(new RoleRoute(null, role.getId(), i));

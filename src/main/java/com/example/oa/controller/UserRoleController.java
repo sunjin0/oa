@@ -38,7 +38,7 @@ public class UserRoleController {
     @ApiImplicitParam(dataType = "UserRole", name = "user", value = "用户实体", required = true)
     @ApiOperation(value = "分页查询用户角色信息")
     @PostMapping("/query")
-    public String queryPage(@RequestBody UserRole userRole) {
+    public R queryPage(@RequestBody UserRole userRole) {
         if (userRole == null) {
             return R.OK(Constant.Parameter_Error);
         }
@@ -54,7 +54,7 @@ public class UserRoleController {
     @ApiImplicitParam(dataType = "UserRole")
     @ApiOperation(value = "添加用户角色信息")
     @PostMapping("/add")
-    public String save(@RequestBody UserRole userRole) {
+    public R save(@RequestBody UserRole userRole) {
         try {
             if (userRole == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -69,7 +69,7 @@ public class UserRoleController {
     @ApiImplicitParam(value = "用户角色Id")
     @ApiOperation(value = "删除用户角色信息")
     @PostMapping("/delete")
-    public String delete(@RequestBody UserRole userRole) {
+    public R delete(@RequestBody UserRole userRole) {
         try {
             if (userRole == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -84,7 +84,7 @@ public class UserRoleController {
     @ApiImplicitParam(dataType = "UserRole")
     @ApiOperation(value = "修改用户角色信息")
     @PostMapping("/update")
-    public String update(@RequestBody UserRole userRole) {
+    public R update(@RequestBody UserRole userRole) {
         try {
             if (userRole == null) {
                 return R.OK(Constant.Parameter_Error);

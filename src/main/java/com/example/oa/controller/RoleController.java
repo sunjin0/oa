@@ -2,22 +2,19 @@ package com.example.oa.controller;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.example.oa.common.Constant;
 import com.example.oa.entity.*;
 import com.example.oa.exceptionHandler.ServerException;
-import com.example.oa.service.impl.RoleRouteServiceImpl;
-import com.example.oa.service.impl.RoleServiceImpl;
-import com.example.oa.service.impl.RouteServiceImpl;
-import com.example.oa.service.impl.UserRoleServiceImpl;
+import com.example.oa.service.impl.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
+import java.util.LinkedList;
 
 /**
  * <p>
@@ -30,6 +27,7 @@ import java.util.List;
  */
 @CrossOrigin("*")
 @RestController
+@Slf4j
 @Api(tags = "角色信息 API", description = "提供角色信息相关的 Rest API")
 @RequestMapping("/v1/api/admin/role")
 public class RoleController {
@@ -42,31 +40,24 @@ public class RoleController {
 
     @Autowired
     private RoleRouteServiceImpl roleRouteService;
+    @Autowired
+    private ResourcesServiceImpl resourcesService;
 
     @ApiImplicitParam(dataType = "Role")
     @ApiOperation(value = "分页查询角色信息")
     @PostMapping("/query")
-    public String queryPage(@RequestBody Role role) {
-        Page<Role> page = new Page<>(role.getCurrent(), role.getSize());
-        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
-        if (role.getDescription() != null) {
-            queryWrapper.like("description", role.getDescription());
-        }
-        if (role.getName() != null) {
-            queryWrapper.like("name", role.getName());
-        }
-        Page<Role> pages = roleService.page(page, queryWrapper);
-        List<Role> roles = pages.getRecords();
+    public R queryPage(@RequestBody Role role) {
+        LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryResources(role);
         HashMap<String, Object> data = new HashMap<>();
-        data.put("routes",routeService.list());
-        PageResult<Role> result = new PageResult<>(role.getCurrent(), role.getSize(), pages.getTotal(), roles, data);
+        data.put("routes", routeService.list());
+        PageResult<HashMap<String, Object>> result = new PageResult<>(role.getCurrent(), role.getSize(), roleService.count(), hashMaps, data);
         return R.OK(result);
     }
 
     @ApiImplicitParam(dataType = "Role")
     @ApiOperation(value = "添加角色信息")
     @PostMapping("/add")
-    public String save(@RequestBody Role role) {
+    public R save(@RequestBody Role role) {
         try {
             if (role == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -80,7 +71,7 @@ public class RoleController {
     @ApiImplicitParam(value = "角色Id")
     @ApiOperation(value = "删除角色信息")
     @PostMapping("/delete/{roleId}")
-    public String delete(@PathVariable Integer roleId) {
+    public R delete(@PathVariable Integer roleId) {
         try {
             if (roleId == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -101,7 +92,7 @@ public class RoleController {
     @ApiImplicitParam(dataType = "Role")
     @ApiOperation(value = "修改角色信息")
     @PostMapping("/update")
-    public String update(@RequestBody Role role) {
+    public R update(@RequestBody Role role) {
         try {
             if (role == null) {
                 return R.OK(Constant.Parameter_Error);

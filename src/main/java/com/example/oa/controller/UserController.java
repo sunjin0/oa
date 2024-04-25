@@ -57,7 +57,7 @@ public class UserController {
     @ApiImplicitParam(value = "用户Id")
     @ApiOperation(value = "获取用户信息")
     @GetMapping("/user/{userId}")
-    public String getUserDetail(@PathVariable Integer userId) {
+    public R getUserDetail(@PathVariable Integer userId) {
 
         User user = userService.getById(userId);
         user.setPassword("");
@@ -67,7 +67,7 @@ public class UserController {
     @ApiImplicitParam(dataType = "User")
     @ApiOperation(value = "分页获取用户信息")
     @PostMapping("/query")
-    public String queryPage(@RequestBody User user) {
+    public R queryPage(@RequestBody User user) {
 
         Page<User> page = new Page<>(user.getCurrent(), user.getSize());
         QueryWrapper<User> userQueryWrapper = getUserQueryWrapper(user);
@@ -82,7 +82,7 @@ public class UserController {
     @ApiImplicitParam(dataType = "User")
     @ApiOperation(value = "添加用户信息")
     @PostMapping("/add")
-    public String save(@RequestBody User user) throws Exception {
+    public R save(@RequestBody User user) throws Exception {
         try {
             if (user == null) {
                 return R.Worm(Constant.Parameter_Error);
@@ -98,7 +98,7 @@ public class UserController {
     @ApiImplicitParam(value = "用户Id")
     @ApiOperation(value = "删除用户信息")
     @PostMapping("/delete/{userId}")
-    public String delete(@PathVariable Integer userId) {
+    public R delete(@PathVariable Integer userId) {
         if (userId == null) {
             return R.OK(Constant.Parameter_Error);
         }
@@ -109,7 +109,7 @@ public class UserController {
     @ApiImplicitParam(dataType = "User")
     @ApiOperation(value = "修改用户信息")
     @PostMapping("/update")
-    public String update(@RequestBody User user) {
+    public R update(@RequestBody User user) {
         try {
             if (user == null) {
                 return R.OK(Constant.Parameter_Error);

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -46,7 +47,7 @@ public class ResourcesController {
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "分页查询资源信息")
     @PostMapping("/query")
-    public String queryPage(@RequestBody Resources resources) {
+    public R queryPage(@RequestBody Resources resources) {
         QueryWrapper<Resources> queryWrapper = new QueryWrapper<>();
         Page<Resources> page = new Page<>(resources.getCurrent(), resources.getSize());
         if (resources.getId() != null) {
@@ -64,19 +65,19 @@ public class ResourcesController {
     @ApiImplicitParam(dataType = "User")
     @ApiOperation(value = "分页查询权限与资源信息")
     @PostMapping("/query/list")
-    public String queryPages(@RequestBody User user) {
+    public R queryPages(@RequestBody User user) {
         LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryPage(user);
         HashMap<String, Object> data = new HashMap<>();
         data.put("roles", roleService.list());
         data.put("users", userService.list());
-        PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps,data);
+        PageResult<HashMap<String, Object>> result = new PageResult<>(user.getCurrent(), user.getSize(), userService.count(), hashMaps, data);
         return R.OK(result);
     }
 
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "添加资源信息")
     @PostMapping("/add")
-    public String save(@RequestBody Resources resources) {
+    public R save(@RequestBody Resources resources) {
         try {
             if (resources == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -91,7 +92,7 @@ public class ResourcesController {
     @ApiImplicitParam(value = "资源Id")
     @ApiOperation(value = "删除资源信息")
     @PostMapping("/delete/{resourcesId}")
-    public String delete(@PathVariable Integer resourcesId) {
+    public R delete(@PathVariable Integer resourcesId) {
         if (resourcesId == null) {
             return R.OK(Constant.Parameter_Error);
         }
@@ -102,7 +103,7 @@ public class ResourcesController {
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "修改资源信息")
     @PostMapping("/update")
-    public String update(@RequestBody Resources resources) {
+    public R update(@RequestBody Resources resources) {
         try {
             if (resources == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -117,7 +118,7 @@ public class ResourcesController {
     @ApiImplicitParam(dataType = "UserRole")
     @ApiOperation(value = "权限添加")
     @PostMapping("/user-role/add")
-    public String save(@RequestBody UserRole userRole) {
+    public R save(@RequestBody UserRole userRole) {
         try {
             if (userRole == null) {
                 return R.OK(Constant.Parameter_Error);
@@ -147,7 +148,7 @@ public class ResourcesController {
     @ApiImplicitParam(value = "用户角色Id")
     @ApiOperation(value = "权限权限")
     @PostMapping("/user-role/delete")
-    public String delete(@RequestBody UserRole userRole) {
+    public R delete(@RequestBody UserRole userRole) {
         try {
             if (userRole == null) {
                 return R.OK(Constant.Parameter_Error);

@@ -92,6 +92,34 @@ public class ResourcesServiceImpl extends ServiceImpl<ResourcesMapper, Resources
             results.add(result);
         }
         return results;
+    }
 
+    public LinkedList<HashMap<String, Object>> queryResources(Role role) {
+        LinkedList<HashMap<String, Object>> hashMaps = new LinkedList<>();
+        Page<Role> page = new Page<>(role.getCurrent(), role.getSize());
+        QueryWrapper<Role> queryWrapper = new QueryWrapper<>();
+        if (role.getDescription() != null) {
+            queryWrapper.like("description", role.getDescription());
+        }
+        if (role.getName() != null) {
+            queryWrapper.like("name", role.getName());
+        }
+        Page<Role> rolePage = roleService.page(page, queryWrapper);
+        List<Role> roles = rolePage.getRecords();
+        for (Role role_ : roles) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", role_.getId());
+            map.put("name", role_.getName());
+            map.put("description", role_.getDescription());
+            map.put("resources", getResources(role_.getId()));
+            hashMaps.add(map);
+        }
+        return hashMaps;
+    }
+
+    public List<Resources> getResources(Integer roleId) {
+        List<RoleRoute> roleRoutes = roleRouteService.list(new QueryWrapper<RoleRoute>().eq("role_id", roleId));
+        List<Route> routes = routeService.list(new QueryWrapper<Route>().in("id", roleRoutes.stream().map(RoleRoute::getRouteId).collect(Collectors.toList())));
+        return list(new QueryWrapper<Resources>().in("id", routes.stream().map(Route::getResourcesId).collect(Collectors.toSet())));
     }
 }

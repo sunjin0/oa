@@ -18,7 +18,7 @@ class OaApplicationTests {
     @Test
     void contextLoads() throws Exception {
 //        System.out.println(userService.getBaseMapper().getResourcesById(3));
-        System.out.println(resourcesService.queryPage(new User().setId(3)));
+        System.out.println(resourcesService.getResources(2));
     }
 
 }
