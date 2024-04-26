@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -37,14 +39,13 @@ public class RoleController {
     private UserRoleServiceImpl userRoleService;
     @Autowired
     private RouteServiceImpl routeService;
-
     @Autowired
     private RoleRouteServiceImpl roleRouteService;
     @Autowired
     private ResourcesServiceImpl resourcesService;
 
     @ApiImplicitParam(dataType = "Role")
-    @ApiOperation(value = "分页查询角色信息")
+    @ApiOperation(value = "分页查询角色权限信息")
     @PostMapping("/query")
     public R queryPage(@RequestBody Role role) {
         LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryResources(role);
@@ -55,7 +56,7 @@ public class RoleController {
     }
 
     @ApiImplicitParam(dataType = "Role")
-    @ApiOperation(value = "添加角色信息")
+    @ApiOperation(value = "添加角色权限信息")
     @PostMapping("/add")
     public R save(@RequestBody Role role) {
         try {
@@ -69,7 +70,7 @@ public class RoleController {
     }
 
     @ApiImplicitParam(value = "角色Id")
-    @ApiOperation(value = "删除角色信息")
+    @ApiOperation(value = "删除角色与权限信息")
     @PostMapping("/delete/{roleId}")
     public R delete(@PathVariable Integer roleId) {
         try {
@@ -90,7 +91,7 @@ public class RoleController {
     }
 
     @ApiImplicitParam(dataType = "Role")
-    @ApiOperation(value = "修改角色信息")
+    @ApiOperation(value = "修改角色权限信息")
     @PostMapping("/update")
     public R update(@RequestBody Role role) {
         try {
@@ -98,7 +99,12 @@ public class RoleController {
                 return R.OK(Constant.Parameter_Error);
             }
             roleService.updateById(role);
-            return R.OK(Constant.Delete_Successfully);
+            QueryWrapper<RoleRoute> queryWrapper2 = new QueryWrapper<>();
+            queryWrapper2.eq("role_id", role.getId());
+            roleRouteService.remove(queryWrapper2);
+            List<RoleRoute> roleRoutes = role.getRouteIds().stream().map((v) -> new RoleRoute(null, role.getId(), v)).collect(Collectors.toList());
+            roleRouteService.saveBatch(roleRoutes);
+            return R.OK(Constant.Modify_Successfully);
         } catch (Exception e) {
             throw new ServerException(e.getMessage());
         }

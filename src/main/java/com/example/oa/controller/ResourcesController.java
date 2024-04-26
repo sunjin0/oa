@@ -146,7 +146,7 @@ public class ResourcesController {
     }
 
     @ApiImplicitParam(value = "用户角色Id")
-    @ApiOperation(value = "权限权限")
+    @ApiOperation(value = "权限解除")
     @PostMapping("/user-role/delete")
     public R delete(@RequestBody UserRole userRole) {
         try {

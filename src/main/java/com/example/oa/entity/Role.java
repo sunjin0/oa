@@ -29,13 +29,14 @@ import java.util.List;
 public class Role extends PageParams implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @TableField(exist = false)
-    public List<Integer> routeIds;
+
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     @ApiModelProperty(value = "姓名", required = true)
     private String name;
     @ApiModelProperty(value = "描述", required = true)
     private String description;
+    @TableField(exist = false)
+    public List<Integer> routeIds;
 
 }
