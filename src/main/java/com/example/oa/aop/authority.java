@@ -24,7 +24,7 @@ import java.util.List;
 @Component
 @Aspect
 @Slf4j
-public class Jurisdiction {
+public class authority {
     @Autowired
     private UserServiceImpl userService;
 

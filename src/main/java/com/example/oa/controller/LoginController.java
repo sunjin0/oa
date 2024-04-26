@@ -41,11 +41,11 @@ public class LoginController {
 
             User user = userService.getOne(queryWrapper);
             if (user == null) {
-                return R.OK("201", Constant.Wrong_Account_Or_Password);
+                return R.OK("200", Constant.Parameter_Error);
             }
             String password = AesUtil.Decrypt(user.getPassword());
             if (!u.getPassword().equals(password)) {
-                return R.OK("201", Constant.Wrong_Account_Or_Password);
+                return R.OK("200", Constant.Wrong_Account_Or_Password);
             }
             user.setPassword("");
             HashMap<String, Object> result = new HashMap<>();

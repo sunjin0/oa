@@ -51,6 +51,7 @@ public class UserController {
             userQueryWrapper.eq("locked", user.getLocked());
 
         }
+        userQueryWrapper.orderByDesc("id");
         return userQueryWrapper;
     }
 

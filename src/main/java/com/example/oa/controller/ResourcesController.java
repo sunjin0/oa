@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * <p>
@@ -44,10 +43,16 @@ public class ResourcesController {
     @Autowired
     private RoleServiceImpl roleService;
 
+    /**
+     * 查询
+     *
+     * @param resources 资源
+     * @return {@link R}
+     */
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "分页查询资源信息")
     @PostMapping("/query")
-    public R queryPage(@RequestBody Resources resources) {
+    public R query(@RequestBody Resources resources) {
         QueryWrapper<Resources> queryWrapper = new QueryWrapper<>();
         Page<Resources> page = new Page<>(resources.getCurrent(), resources.getSize());
         if (resources.getId() != null) {
@@ -62,10 +67,16 @@ public class ResourcesController {
        return R.OK(result);
     }
 
+    /**
+     * 查询身份验证
+     *
+     * @param user 用户
+     * @return {@link R}
+     */
     @ApiImplicitParam(dataType = "User")
     @ApiOperation(value = "分页查询权限与资源信息")
     @PostMapping("/query/list")
-    public R queryPages(@RequestBody User user) {
+    public R queryAuth(@RequestBody User user) {
         LinkedList<HashMap<String, Object>> hashMaps = resourcesService.queryPage(user);
         HashMap<String, Object> data = new HashMap<>();
         data.put("roles", roleService.list());
@@ -74,6 +85,12 @@ public class ResourcesController {
         return R.OK(result);
     }
 
+    /**
+     * 保存
+     *
+     * @param resources 资源
+     * @return {@link R}
+     */
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "添加资源信息")
     @PostMapping("/add")
@@ -89,6 +106,12 @@ public class ResourcesController {
         }
     }
 
+    /**
+     * 删除
+     *
+     * @param resourcesId 资源 ID
+     * @return {@link R}
+     */
     @ApiImplicitParam(value = "资源Id")
     @ApiOperation(value = "删除资源信息")
     @PostMapping("/delete/{resourcesId}")
@@ -100,6 +123,12 @@ public class ResourcesController {
         return R.OK(Constant.Delete_Successfully);
     }
 
+    /**
+     * 更新
+     *
+     * @param resources 资源
+     * @return {@link R}
+     */
     @ApiImplicitParam(dataType = "Resources")
     @ApiOperation(value = "修改资源信息")
     @PostMapping("/update")
@@ -115,6 +144,12 @@ public class ResourcesController {
         }
     }
 
+    /**
+     * 权限添加
+     *
+     * @param userRole 用户角色
+     * @return {@link R}
+     */
     @ApiImplicitParam(dataType = "UserRole")
     @ApiOperation(value = "权限添加")
     @PostMapping("/user-role/add")
@@ -131,6 +166,12 @@ public class ResourcesController {
         }
     }
 
+    /**
+     * 获取用户角色
+     *
+     * @param userRole 用户角色
+     * @return {@link ArrayList}<{@link UserRole}>
+     */
     private ArrayList<UserRole> getUserRoles(UserRole userRole) {
         List<Integer> roleIds = userRole.getRoleIds();
         ArrayList<UserRole> userRoles = new ArrayList<>();
@@ -145,6 +186,12 @@ public class ResourcesController {
         return userRoles;
     }
 
+    /**
+     * 权限解除
+     *
+     * @param userRole 用户角色
+     * @return {@link R}
+     */
     @ApiImplicitParam(value = "用户角色Id")
     @ApiOperation(value = "权限解除")
     @PostMapping("/user-role/delete")
